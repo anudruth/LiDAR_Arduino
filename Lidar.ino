@@ -11,15 +11,8 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#ifdef ARDUINO_SAM_DUE
-#define DEV_I2C Wire1
-#elif defined(ARDUINO_ARCH_STM32)
+
 #define DEV_I2C Wire
-#elif defined(ARDUINO_ARCH_AVR)
-#define DEV_I2C Wire
-#else
-#define DEV_I2C Wire
-#endif
 #define SerialPort Serial
 
 //For AVR compatibility where D8 and D2 are undefined
