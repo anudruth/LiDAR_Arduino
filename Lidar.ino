@@ -2,6 +2,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <Arduino.h>
 #include <Wire.h>
+#include <Adafruit_MotorShield.h>
 #include <vl53l1x_x_nucleo_53l1a1_class.h>
 #include <stmpe1600_class.h>
 #include <string.h>
@@ -29,6 +30,8 @@
 // Components.
 STMPE1600DigiOut *xshutdown_top;
 VL53L1_X_NUCLEO_53L1A1 *sensor_vl53l1_top;
+Adafruit_MotorShield *AFMS;
+Adafruit_StepperMotor *myMotor;
 
 volatile int interruptCount=0;
 
@@ -52,6 +55,15 @@ void setup()
    // Initialize I2C bus.
    DEV_I2C.begin();
 
+   // Initialize motor driver and get motor
+   AFMS = new Adafruit_MotorShield();
+   myMotor = AFMS->getStepper(200,2);
+   delay(100);
+   AFMS->begin();
+   //delay(100);
+   //myMotor->setSpeed(10);  // 10 rpm   
+   delay(100);
+   
    // Create VL53L1X top component.
    xshutdown_top = new STMPE1600DigiOut(&DEV_I2C, GPIO_15, (0x42 * 2));
    sensor_vl53l1_top = new VL53L1_X_NUCLEO_53L1A1(&DEV_I2C, xshutdown_top, A2);
@@ -107,11 +119,16 @@ void loop()
       {
          SerialPort.println("Restart top sensor failed");
       }
+      //delay(100);
+      myMotor->onestep(FORWARD, SINGLE);
+      //delay(100);
 
       // Output data.
       char report[64];
       snprintf(report, sizeof(report), "| Distance top [mm]: %d |", distance);
       SerialPort.println(report);
+      
+      //delay(100);
       digitalWrite(13, LOW);
    }
 }
