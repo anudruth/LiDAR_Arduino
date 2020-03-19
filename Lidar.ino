@@ -57,7 +57,7 @@ void setup()
 
    // Initialize motor driver and get motor
    AFMS = new Adafruit_MotorShield();
-   myMotor = AFMS->getStepper(200,2);
+   myMotor = AFMS->getStepper(513,2); // 513 steps per revolution on channel 2
    delay(100);
    AFMS->begin();
    //delay(100);
