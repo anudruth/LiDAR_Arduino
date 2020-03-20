@@ -35,6 +35,7 @@ Adafruit_StepperMotor* myMotor;
 
 volatile int interruptCount = 0;
 volatile int stepCounter = 0;
+volatile int state = 0; //0 = forward, 1 = backward
 
 void measure()
 {
@@ -104,9 +105,10 @@ void setup()
 
 void loop()
 {
-  if (stepCounter < 171)
+  if ((stepCounter < 171) && (state = 0))
   {
     stepCounter++;
+    if (stepCounter == 170) state = 1;
     if (interruptCount)
     {
       uint16_t distance;
@@ -143,6 +145,7 @@ void loop()
     }
     else {
       stepCounter--;
+      if (stepCounter == 0) state = 0;
       if (interruptCount)
       {
         uint16_t distance;
