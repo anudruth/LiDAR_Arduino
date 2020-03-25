@@ -34,6 +34,7 @@ Adafruit_MotorShield *AFMS;
 Adafruit_StepperMotor *myMotor;
 
 volatile int interruptCount=0;
+volatile int count=0;
 
 void measure()
 {
@@ -125,8 +126,11 @@ void loop()
 
       // Output data.
       char report[64];
-      snprintf(report, sizeof(report), "| Distance top [mm]: %d |", distance);
-      SerialPort.println(report);
+      snprintf(report, sizeof(report), "| Distance top [mm]: %d | Count: ", distance);
+      SerialPort.print(report);
+      SerialPort.println(count);
+
+      count = (count + 1) % 171;
       
       //delay(100);
       digitalWrite(13, LOW);
