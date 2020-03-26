@@ -129,7 +129,7 @@ void loop()
     // Output data.
     char report[64];
     SerialPort.print(state);
-    snprintf(report, sizeof(report), "| Distance top [mm]: %d | Count:  ", distance);
+    snprintf(report, sizeof(report), "| Distance top [mm]: %d | Count: ", distance);
     SerialPort.print(report);
     
     SerialPort.println(count);
