@@ -21,7 +21,7 @@
 #define interruptPin A2
 
 volatile int interruptCount;
-int count = 1 ;
+int count ;
 int state; //0 = forward, 1 = backward
 
 // Components.
@@ -137,16 +137,17 @@ void loop()
 
     if ((count < 171) && (state == 0))
     {
-      if (count == 170) state = 1;
-      myMotor->onestep(FORWARD, SINGLE);
       count = count + 1;
+      myMotor->onestep(FORWARD, SINGLE);
+      if (count == 170) state = 1;
+      
+      
     }
     else {
-      if (count == 1){
-        reset();
-      }
-      myMotor->onestep(BACKWARD, SINGLE);
       count = count - 1;
+      myMotor->onestep(BACKWARD, SINGLE);
+      if (count == 0) reset();
+      
       
     }
 
